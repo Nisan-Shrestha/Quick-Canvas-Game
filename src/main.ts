@@ -183,7 +183,7 @@ class Player {
   private movePosition(delta: number, direction: number): void {
     if (this.targetPos != this.currentPos)
       this.currentPos +=
-        direction * delta * (this.moveSpeed + Math.trunc(Score / 15) * 0.3);
+        direction * delta * (this.moveSpeed + Math.trunc(Score / 8) * 0.25);
     this.rect.x = this.currentPos;
   }
 
@@ -223,7 +223,7 @@ class Obstacle {
   }
 
   private movePosition(delta: number): void {
-    this.rect.y += delta * (OBSTACLE_SPEED + Math.trunc(Score / 15) * 0.15);
+    this.rect.y += delta * (OBSTACLE_SPEED + Math.trunc(Score / 8) * 0.255);
     // direction * delta * ;
 
     if (this.rect.y >= canvas.height) {
@@ -252,7 +252,7 @@ function update() {
       player.update(deltaTime / PHYSICS_STEP);
       for (let obj of obsArray) obj.update(deltaTime / PHYSICS_STEP);
       BGPos +=
-        (deltaTime / PHYSICS_STEP) * (BG_SPEED + Math.trunc(Score / 15) * 0.1);
+        (deltaTime / PHYSICS_STEP) * (BG_SPEED + Math.trunc(Score / 8) * 0.25);
       canvas.style.backgroundPositionY = Math.trunc(BGPos) + "px";
     }
 
@@ -309,14 +309,14 @@ function setupGame() {
     100,
     123,
     true,
-    "./public/player.png"
+    "/player.png"
   );
   obsArray = [];
   obsArray.push(
-    new Obstacle(0, -123, 100, 123, "blue", true, "public/enemy.png")
+    new Obstacle(0, -123, 100, 123, "blue", true, "/enemy.png")
   );
   obsArray.push(
-    new Obstacle(0, -123, 100, 123, "blue", true, "public/enemy.png")
+    new Obstacle(0, -123, 100, 123, "blue", true, "/enemy.png")
   );
 }
 
