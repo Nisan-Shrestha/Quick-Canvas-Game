@@ -15,24 +15,22 @@ let enemyloaded = false;
 let imagesLoaded = false;
 
 const PlayerSprite = new Image();
-PlayerSprite.addEventListener("load", () => {
+PlayerSprite.onload = () => {
+  console.log("loaded player");
   playerloaded = true;
-  if(playerloaded && enemyloaded) imagesLoaded = true;
-});
-PlayerSprite.src = "/player.png";
+  if (playerloaded && enemyloaded) imagesLoaded = true;
+};
 
 const EnemySprite = new Image();
-  EnemySprite.addEventListener("load", () => {
-    enemyloaded = true;
-    if(enemyloaded && enemyloaded) imagesLoaded = true;
-  });
+EnemySprite.onload = () => {
+  console.log("loaded enemy");
+  enemyloaded = true;
+  if (enemyloaded && playerloaded) imagesLoaded = true;
+};
+
+PlayerSprite.src = "/player.png";
 EnemySprite.src = "/enemy.png";
 
-PlayerSprite.onload = () => {
-  EnemySprite.onload = () => {
-    imagesLoaded = true;
-  };
-};
 // new Image();
 //       this.image.src = imageSrc;
 const canvas: HTMLCanvasElement = document.getElementById(
@@ -170,10 +168,10 @@ class Player {
   setupControls() {
     window.addEventListener("keydown", (e) => {
       switch (e.key) {
-        case this.keymap.left:
+        case this.keymap.left || "ArrowLeft":
           this.shiftTargetLeft();
           break;
-        case this.keymap.right:
+        case this.keymap.right || "ArrowRight":
           this.shiftTargetRight();
           break;
         case this.keymap.fire:
@@ -205,7 +203,7 @@ class Player {
   private movePosition(delta: number, direction: number): void {
     if (this.targetPos != this.currentPos)
       this.currentPos +=
-        direction * delta * (this.moveSpeed + Math.trunc(Score / 8) * 0.25);
+        direction * delta * (this.moveSpeed + Math.trunc(Score / 8) * 0.15);
     this.rect.x = this.currentPos;
   }
 
@@ -245,7 +243,7 @@ class Obstacle {
   }
 
   private movePosition(delta: number): void {
-    this.rect.y += delta * (OBSTACLE_SPEED + Math.trunc(Score / 8) * 0.255);
+    this.rect.y += delta * (OBSTACLE_SPEED + Math.trunc(Score / 8) * 0.155);
     // direction * delta * ;
 
     if (this.rect.y >= canvas.height) {
@@ -274,7 +272,7 @@ function update() {
       player.update(deltaTime / PHYSICS_STEP);
       for (let obj of obsArray) obj.update(deltaTime / PHYSICS_STEP);
       BGPos +=
-        (deltaTime / PHYSICS_STEP) * (BG_SPEED + Math.trunc(Score / 8) * 0.25);
+        (deltaTime / PHYSICS_STEP) * (BG_SPEED + Math.trunc(Score / 8) * 0.15);
       canvas.style.backgroundPositionY = Math.trunc(BGPos) + "px";
     }
 
@@ -408,12 +406,7 @@ function initMenu() {
       onClick: () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillText("Loading...", canvas.width / 2, canvas.height / 2);
-        if (imagesLoaded) {
-          setupGame();
-          lastTimestamp = Date.now();
-          console.log("Starting game");
-          setTimeout(() => update(), 0);
-        }
+        tryStartGame();
       },
       active: false,
     },
@@ -493,3 +486,18 @@ function main() {
 }
 
 main();
+
+function tryStartGame(){
+  if (!imagesLoaded) {
+    // imagesLoaded = true;
+    console.log("timeout")
+    setTimeout(() => tryStartGame(), 100);
+    return;
+  }
+  if (imagesLoaded) {
+    setupGame();
+    lastTimestamp = Date.now();
+    console.log("Starting game");
+    setTimeout(() => update(), 0);
+    }
+}
