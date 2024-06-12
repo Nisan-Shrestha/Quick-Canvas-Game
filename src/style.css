@@ -1,0 +1,12 @@
+.game-container {
+  box-sizing: border-box;
+  width: 90lvw;
+  height: 90lvh;
+  margin: auto;
+  border: 1px solid black;
+} 
+
+#gameCanvas {
+  background: url(https://opengameart.org/sites/default/files/background-1_0.png);
+  background-size: cover;
+}
