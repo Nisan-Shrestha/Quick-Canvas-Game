@@ -168,10 +168,12 @@ class Player {
   setupControls() {
     window.addEventListener("keydown", (e) => {
       switch (e.key) {
-        case this.keymap.left || "ArrowLeft":
+        case this.keymap.left:
+        case "ArrowLeft":
           this.shiftTargetLeft();
           break;
-        case this.keymap.right || "ArrowRight":
+        case this.keymap.right:
+        case "ArrowRight":
           this.shiftTargetRight();
           break;
         case this.keymap.fire:
@@ -487,10 +489,10 @@ function main() {
 
 main();
 
-function tryStartGame(){
+function tryStartGame() {
   if (!imagesLoaded) {
     // imagesLoaded = true;
-    console.log("timeout")
+    console.log("timeout");
     setTimeout(() => tryStartGame(), 100);
     return;
   }
@@ -499,5 +501,5 @@ function tryStartGame(){
     lastTimestamp = Date.now();
     console.log("Starting game");
     setTimeout(() => update(), 0);
-    }
+  }
 }
