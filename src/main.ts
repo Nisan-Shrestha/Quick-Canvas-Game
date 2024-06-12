@@ -10,6 +10,13 @@ let Game_Over = false;
 let Score: number = 0;
 let BGPos: number = 0;
 let global_listener;
+
+const PlayerSprite = new Image();
+PlayerSprite.src = "/player.png";
+const EnemySprite = new Image();
+EnemySprite.src = "/enemy.png";
+// new Image();
+//       this.image.src = imageSrc;
 const canvas: HTMLCanvasElement = document.getElementById(
   "gameCanvas"
 ) as HTMLCanvasElement;
@@ -85,7 +92,7 @@ class Rect2D {
     height: number,
     color: string,
     drawImage: boolean = false,
-    imageSrc: string | undefined = undefined
+    image: HTMLImageElement
   ) {
     this.x = x;
     this.y = y;
@@ -93,10 +100,7 @@ class Rect2D {
     this.height = height;
     this.color = color;
     this.drawImage = drawImage;
-    if (imageSrc) {
-      this.image = new Image();
-      this.image.src = imageSrc;
-    }
+    this.image = image;
   }
 
   draw(ctx: CanvasRenderingContext2D) {
@@ -121,7 +125,7 @@ class Player {
     width: number,
     height: number,
     imageMode: boolean = false,
-    imageSrc: string | undefined = undefined
+    image: HTMLImageElement
   ) {
     this.moveSpeed = PLAYER_MOVE_SPEED;
     this.keymap = keymap;
@@ -137,7 +141,7 @@ class Player {
       height,
       "red",
       imageMode,
-      imageSrc
+      image
     );
     this.lane = Lane.center;
     this.targetPos = lanePos[Lane.center];
@@ -215,9 +219,9 @@ class Obstacle {
     height: number,
     color: string,
     imageMode: boolean = false,
-    imageSrc: string | undefined = undefined
+    image:HTMLImageElement
   ) {
-    this.rect = new Rect2D(x, y, width, height, color, imageMode, imageSrc);
+    this.rect = new Rect2D(x, y, width, height, color, imageMode, image);
     this.lane = Lane.center;
     this.rect.x = lanePos[this.lane];
   }
@@ -309,14 +313,14 @@ function setupGame() {
     100,
     123,
     true,
-    "/player.png"
+    PlayerSprite
   );
   obsArray = [];
   obsArray.push(
-    new Obstacle(0, -123, 100, 123, "blue", true, "/enemy.png")
+    new Obstacle(0, -123, 100, 123, "blue", true, EnemySprite)
   );
   obsArray.push(
-    new Obstacle(0, -123, 100, 123, "blue", true, "/enemy.png")
+    new Obstacle(0, -123, 100, 123, "blue", true, EnemySprite)
   );
 }
 
