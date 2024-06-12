@@ -313,10 +313,10 @@ function setupGame() {
   );
   obsArray = [];
   obsArray.push(
-    new Obstacle(0, -123, 100, 123, "blue", true, "./public/enemy.png")
+    new Obstacle(0, -123, 100, 123, "blue", true, "public/enemy.png")
   );
   obsArray.push(
-    new Obstacle(0, -123, 100, 123, "blue", true, "./public/enemy.png")
+    new Obstacle(0, -123, 100, 123, "blue", true, "public/enemy.png")
   );
 }
 
@@ -372,7 +372,7 @@ function handleCanvasClick(
   });
 }
 
-// Example usage
+// Example usageplaye
 
 function initMenu() {
   const buttonWidth = 200;
