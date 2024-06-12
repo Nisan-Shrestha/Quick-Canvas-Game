@@ -13,6 +13,7 @@ let global_listener;
 
 const PlayerSprite = new Image();
 PlayerSprite.src = "/player.png";
+
 const EnemySprite = new Image();
 EnemySprite.src = "/enemy.png";
 // new Image();
@@ -219,7 +220,7 @@ class Obstacle {
     height: number,
     color: string,
     imageMode: boolean = false,
-    image:HTMLImageElement
+    image: HTMLImageElement
   ) {
     this.rect = new Rect2D(x, y, width, height, color, imageMode, image);
     this.lane = Lane.center;
@@ -316,12 +317,8 @@ function setupGame() {
     PlayerSprite
   );
   obsArray = [];
-  obsArray.push(
-    new Obstacle(0, -123, 100, 123, "blue", true, EnemySprite)
-  );
-  obsArray.push(
-    new Obstacle(0, -123, 100, 123, "blue", true, EnemySprite)
-  );
+  obsArray.push(new Obstacle(0, -123, 100, 123, "blue", true, EnemySprite));
+  obsArray.push(new Obstacle(0, -123, 100, 123, "blue", true, EnemySprite));
 }
 
 function drawMainMenu(ctx: CanvasRenderingContext2D, buttons: Button[]) {
@@ -392,11 +389,16 @@ function initMenu() {
       width: buttonWidth,
       height: buttonHeight,
       onClick: () => {
-        setupGame();
-        console.log("Starting game");
-        lastTimestamp = Date.now();
-
-        setTimeout(() => update(), 0);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillText("Loading...", canvas.width / 2, canvas.height / 2);
+        PlayerSprite.onload = () => {
+          EnemySprite.onload = () => {
+            setupGame();
+            lastTimestamp = Date.now();
+            console.log("Starting game");
+            setTimeout(() => update(), 0);
+          };
+        };
       },
       active: false,
     },
@@ -413,6 +415,7 @@ function initMenu() {
       Score = 0;
 
       obsArray = [];
+
       setupGame();
     },
     active: false,
