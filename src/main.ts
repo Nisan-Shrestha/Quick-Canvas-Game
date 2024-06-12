@@ -10,12 +10,29 @@ let Game_Over = false;
 let Score: number = 0;
 let BGPos: number = 0;
 let global_listener;
+let playerloaded = false;
+let enemyloaded = false;
+let imagesLoaded = false;
 
 const PlayerSprite = new Image();
+PlayerSprite.addEventListener("load", () => {
+  playerloaded = true;
+  if(playerloaded && enemyloaded) imagesLoaded = true;
+});
 PlayerSprite.src = "/player.png";
 
 const EnemySprite = new Image();
+  EnemySprite.addEventListener("load", () => {
+    enemyloaded = true;
+    if(enemyloaded && enemyloaded) imagesLoaded = true;
+  });
 EnemySprite.src = "/enemy.png";
+
+PlayerSprite.onload = () => {
+  EnemySprite.onload = () => {
+    imagesLoaded = true;
+  };
+};
 // new Image();
 //       this.image.src = imageSrc;
 const canvas: HTMLCanvasElement = document.getElementById(
@@ -391,14 +408,12 @@ function initMenu() {
       onClick: () => {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.fillText("Loading...", canvas.width / 2, canvas.height / 2);
-        PlayerSprite.onload = () => {
-          EnemySprite.onload = () => {
-            setupGame();
-            lastTimestamp = Date.now();
-            console.log("Starting game");
-            setTimeout(() => update(), 0);
-          };
-        };
+        if (imagesLoaded) {
+          setupGame();
+          lastTimestamp = Date.now();
+          console.log("Starting game");
+          setTimeout(() => update(), 0);
+        }
       },
       active: false,
     },
